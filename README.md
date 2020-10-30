@@ -26,7 +26,7 @@ In der Datei **.beradaba** müssen BENUTZERNAME und PASSWORT für den Benutzer d
 
 ## Einrichten des SQL-Servers
 
-``mysql
+``sql
 mysql> CREATE USER 'BENUTZERNAME'@'localhost' IDENTIFIED BY 'PASSWORT';
 Query OK, 0 rows affected (0.04 sec)
 
@@ -34,3 +34,4 @@ mysql> GRANT ALL PRIVILEGES ON DATENBANKNAME.* TO 'BENUTZERNAME'@'localhost' WIT
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> 
+``
