@@ -177,7 +177,7 @@ CREATE TABLE zeitmodell_mitarbeiter (
 
 
 --
--- Jettz laden wir ein paar Daten in die neu angelegte Datenbank
+-- Jetzt laden wir ein paar Daten in die neu angelegte Datenbank
 --
 SELECT '*** Lade Daten der Mitarbeiter ...' as 'INFO:';
 source mysql/daten_mitarbeiter.sql ;
@@ -196,3 +196,50 @@ source mysql/daten_zeitmodelle.sql ;
 SELECT CONCAT('    ', COUNT(*), ' Zeitmodelle') as 'INFO:' FROM zeitmodell;
 
 
+--
+-- Jetzt besetzen wir ein paar Posten in der Firma
+-- (erst mal ohne Datum, die Leute haben den Job quasi immer)
+--
+
+-- Leiter der Abteilung 'Board' ist der MA mit der Nummer 10100
+INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES (10100, 50000);
+-- MA in der Abteilung 'Board'
+INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES
+(10101, 50000),
+(10102, 50000),
+(10103, 50000),
+(10104, 50000);
+
+-- Leiter der Abteilung 'Marketing' ist der MA mit der Nummer 15200
+INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES (15200, 50001);
+-- Leiter der Abteilung 'Finance' ist der MA mit der Nummer 15300
+INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES (15300, 50002);
+-- Leiter der Abteilung 'Human Resources' ist der MA mit der Nummer 15400
+INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES (15400, 50003);
+-- Leiter der Abteilung 'Production' ist der MA mit der Nummer 15500
+INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES (15500, 50004);
+
+-- MA der Abteilung 'Marketing'
+INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES
+(15201, 50001),
+(15202, 50001),
+(15203, 50001),
+(15204, 50001),
+(15205, 50001);
+
+-- MA der Abteilung 'Finance'
+INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`)
+VALUES
+(15301, 50002),
+(15302, 50002),
+(15303, 50002),
+(15304, 50002),
+(15305, 50002),
+(15306, 50002);
