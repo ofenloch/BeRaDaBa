@@ -39,8 +39,8 @@ SELECT '*** Erzeuge Struktur der Datenbank ...' as 'INFO:';
 -- Jeder MA hat ein Datum, an dem seine Probezeit zu Ende geht.
 --
 CREATE TABLE mitarbeiter (
-    mitarbeiter_nr        INT                  NOT NULL AUTO_INCREMENT COMMENT 'interne numerische ID, wird als PRIMARY KEY verwendet',
-    mitarbeiter_id        VARCHAR(64)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. ETWeb-54321-GEWI, sollte einzigartig sein',
+    nr                    INT                  NOT NULL AUTO_INCREMENT COMMENT 'interne numerische ID, wird als PRIMARY KEY verwendet',
+    id                    VARCHAR(64)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. ETWeb-54321-GEWI, sollte einzigartig sein',
     nachname              VARCHAR(128)         NOT NULL COMMENT 'Der Nachname des Mitarbeiters',
     vorname               VARCHAR(128)         NOT NULL COMMENT 'Der Vorname des Mitarbeiters',
     datum_geburt          DATE                 NOT NULL DEFAULT '1900-01-01' COMMENT 'Geburtsdatum des Mitarbeiters in der Form JJJJ-MM-TT, zb. 1966-02-09 für den 9. Februar 1966',
@@ -49,7 +49,7 @@ CREATE TABLE mitarbeiter (
     datum_eintritt        DATE                 NOT NULL DEFAULT '1920-01-01' COMMENT 'Das Datum des Eintritts in die Firma in der Form JJJJ-MM-TT, zb. 1986-09-02 für den 2. September 1986',
     datum_austritt        DATE                 NOT NULL DEFAULT '2222-01-01' COMMENT 'Das Datum des Austritts aus der Firma in der Form JJJJ-MM-TT, zb. 2035-10-12 für den 12. Oktober 2035',
     datum_probezeit_ende  DATE                 NOT NULL DEFAULT '1920-07-01' COMMENT 'Das Datum, an dem die Probezeit endet',
-    PRIMARY KEY (mitarbeiter_nr)
+    PRIMARY KEY (nr)
 ) COMMENT 'Liste der Mitarbeiter';
 
 --
@@ -58,10 +58,10 @@ CREATE TABLE mitarbeiter (
 -- Jede Abteilung hat eine ein-eindeutige interne Nummer.
 -- Jede Abteilung hat einen beliebigen Namen, der allerdings einzigartig sein sollte.
 CREATE TABLE abteilung (
-    abteilung_nr          INT                  NOT NULL AUTO_INCREMENT COMMENT 'interne numerische ID, wird als PRIMARY KEY verwendet',
-    abteilung_name        VARCHAR(40)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. LPT-12.5.4.7, sollte einzigartig sein',
-    PRIMARY KEY (abteilung_nr),
-    UNIQUE  KEY (abteilung_name)
+    nr                   INT                  NOT NULL AUTO_INCREMENT COMMENT 'interne numerische ID, wird als PRIMARY KEY verwendet',
+    name                 VARCHAR(40)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. LPT-12.5.4.7, sollte einzigartig sein',
+    PRIMARY KEY (nr),
+    UNIQUE  KEY (name)
 ) COMMENT 'Liste der Abteilungen';
 
 --
@@ -72,12 +72,12 @@ CREATE TABLE abteilung (
 -- Der Abteilungsleiter ist im Zeitraum datum_von bis datum_bis Leiter der Abteilung.
 --
 CREATE TABLE abteilung_leiter (
-   mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(mitarbeiter_nr),
-   abteilung_nr           INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
+   mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(nr),
+   abteilung_nr           INT                  NOT NULL REFERENCES abteilung(nr),
    datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
    datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
-   FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(mitarbeiter_nr) ON DELETE CASCADE,
-   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
+   FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(nr) ON DELETE CASCADE,
+   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(nr) ON DELETE CASCADE,
    PRIMARY KEY (mitarbeiter_nr, abteilung_nr, datum_von)
 ) COMMENT 'Zuordnung Abteilung / Abteilungsleiter';
 
@@ -89,12 +89,12 @@ CREATE TABLE abteilung_leiter (
 -- Der MA ist im Zeitraum datum_von bis datum_bis Mitglied der Abteilung.
 --
 CREATE TABLE abteilung_mitarbeiter (
-   mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(mitarbeiter_nr),
-   abteilung_nr           INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
+   mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(nr),
+   abteilung_nr           INT                  NOT NULL REFERENCES abteilung(nr),
    datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
    datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
-   FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(mitarbeiter_nr) ON DELETE CASCADE,
-   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
+   FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(nr) ON DELETE CASCADE,
+   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(nr) ON DELETE CASCADE,
    PRIMARY KEY (mitarbeiter_nr, abteilung_nr, datum_von)
 ) COMMENT 'Zuordnung Abteilung / Mitarbeiter';
 
@@ -109,12 +109,12 @@ CREATE TABLE abteilung_mitarbeiter (
 -- (Sollte man das Organigramm über die Abteilungsleiter abhandeln, oder ist das zu kompliziert?)
 -- 
 CREATE TABLE abteilung_unterabteilung (
-   unterabteilung_nr      INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
-   abteilung_nr           INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
+   unterabteilung_nr      INT                  NOT NULL REFERENCES abteilung(nr),
+   abteilung_nr           INT                  NOT NULL REFERENCES abteilung(nr),
    datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
    datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
-   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
-   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
+   FOREIGN KEY (unterabteilung_nr)             REFERENCES abteilung(nr) ON DELETE CASCADE,
+   FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(nr) ON DELETE CASCADE,
    PRIMARY KEY (unterabteilung_nr, abteilung_nr, datum_von)
 ) COMMENT 'Zuordnung Abteilung / (Unter-)Abteilung';
 

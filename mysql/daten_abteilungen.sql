@@ -1,4 +1,4 @@
-INSERT INTO `abteilung` (`abteilung_nr`,`abteilung_name`)
+INSERT INTO `abteilung` (`nr`,`name`)
 VALUES
 (50000,'Board'),
 (50001,'Marketing'),
