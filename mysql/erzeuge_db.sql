@@ -204,6 +204,13 @@ SELECT CONCAT('    ', COUNT(*), ' Zeitmodelle') as 'INFO:' FROM zeitmodell;
 -- Leiter der Abteilung 'Board' ist der MA mit der Nummer 10100
 INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
 VALUES (10100, 50000);
+-- Der Leiter der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`)
+VALUES (10100, 25);
+-- Das Zeitmodell des Abteilungsleiter 'Board'
+INSERT INTO `zeitmodell_mitarbeiter` (`mitarbeiter_nr`, `zeitmodell_nr`)
+VALUES (10100, 14);
+
 -- MA in der Abteilung 'Board'
 INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`)
 VALUES
@@ -211,6 +218,20 @@ VALUES
 (10102, 50000),
 (10103, 50000),
 (10104, 50000);
+-- Entgeltgruppen der MA in der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`)
+VALUES 
+(10101, 24),
+(10102, 24),
+(10103, 24),
+(10104, 24);
+-- Zeitmodelle der MA in der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+INSERT INTO `zeitmodell_mitarbeiter` (`mitarbeiter_nr`, `zeitmodell_nr`)
+VALUES 
+(10101, 13),
+(10102, 13),
+(10103, 13),
+(10104, 13);
 
 -- Leiter der Abteilung 'Marketing' ist der MA mit der Nummer 15200
 INSERT INTO `abteilung_leiter` (`mitarbeiter_nr`, `abteilung_nr`)
@@ -233,6 +254,21 @@ VALUES
 (15203, 50001),
 (15204, 50001),
 (15205, 50001);
+-- Entgeltgruppen der MA in der Abteilung 'Marketing' hat ein gutes Gehalt (AT 5)
+INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`)
+VALUES 
+(15201, 24),
+(15202, 24),
+(15203, 24),
+(15204, 24);
+
+-- Zeitmodelle der MA in der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+INSERT INTO `zeitmodell_mitarbeiter` (`mitarbeiter_nr`, `zeitmodell_nr`)
+VALUES 
+(15201, 13),
+(15202, 13),
+(15203, 13),
+(15204, 13);
 
 -- MA der Abteilung 'Finance'
 INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`)
