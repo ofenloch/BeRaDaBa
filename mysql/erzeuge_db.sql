@@ -74,7 +74,7 @@ CREATE TABLE abteilung (
 CREATE TABLE abteilung_leiter (
    mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(mitarbeiter_nr),
    abteilung_nr           INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
-   datum_von              DATE                 NOT NULL,
+   datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
    datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
    FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(mitarbeiter_nr) ON DELETE CASCADE,
    FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
@@ -91,7 +91,7 @@ CREATE TABLE abteilung_leiter (
 CREATE TABLE abteilung_mitarbeiter (
    mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(mitarbeiter_nr),
    abteilung_nr           INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
-   datum_von              DATE                 NOT NULL,
+   datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
    datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
    FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(mitarbeiter_nr) ON DELETE CASCADE,
    FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
@@ -111,12 +111,39 @@ CREATE TABLE abteilung_mitarbeiter (
 CREATE TABLE abteilung_unterabteilung (
    unterabteilung_nr      INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
    abteilung_nr           INT                  NOT NULL REFERENCES abteilung(abteilung_nr),
-   datum_von              DATE                 NOT NULL,
+   datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
    datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
    FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
    FOREIGN KEY (abteilung_nr)                  REFERENCES abteilung(abteilung_nr) ON DELETE CASCADE,
    PRIMARY KEY (unterabteilung_nr, abteilung_nr, datum_von)
 ) COMMENT 'Zuordnung Abteilung / (Unter-)Abteilung';
+
+
+--
+-- Tabelle mit Entgeltgruppen
+-- 
+CREATE TABLE entgeltgruppe (
+    nr          INT                  NOT NULL AUTO_INCREMENT COMMENT 'interne numerische ID, wird als PRIMARY KEY verwendet',
+    name        VARCHAR(40)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. EG13, sollte einzigartig sein',
+    PRIMARY KEY (nr),
+    UNIQUE  KEY (name)
+) COMMENT 'Liste der Abteilungen';
+
+--
+-- Tabelle mit (Gleit-)Zeitmodellen
+-- 
+CREATE TABLE zeitmodell (
+    nr            INT                  NOT NULL AUTO_INCREMENT COMMENT 'interne numerische ID, wird als PRIMARY KEY verwendet',
+    name          VARCHAR(40)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. GLZ35, sollte einzigartig sein',
+    wochenstunden FLOAT                NOT NULL DEFAULT 35.0 COMMENT 'wöchentliche Arbeitszeit',
+    PRIMARY KEY (nr),
+    UNIQUE  KEY (name)
+) COMMENT 'Liste der Abteilungen';
+
+
+
+
+
 
 
 SELECT '*** Lade Daten der Mitarbeiter ...' as 'INFO:';
