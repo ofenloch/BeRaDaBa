@@ -154,5 +154,12 @@ SELECT '*** Lade Abteilungen ...' as 'INFO:';
 source mysql/daten_abteilungen.sql ;
 SELECT CONCAT('    ', COUNT(*), ' Abteilungen') as 'INFO:' FROM abteilung;
 
+SELECT '*** Lade Entgeltgruppen ...' as 'INFO:';
+source mysql/daten_entgeltgruppen.sql ;
+SELECT CONCAT('    ', COUNT(*), ' Entgeltgruppen') as 'INFO:' FROM entgeltgruppe;
+
+SELECT '*** Lade Zeitmodelle ...' as 'INFO:';
+source mysql/daten_zeitmodelle.sql ;
+SELECT CONCAT('    ', COUNT(*), ' Zeitmodelle') as 'INFO:' FROM zeitmodell;
 
 
