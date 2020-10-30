@@ -176,8 +176,9 @@ CREATE TABLE zeitmodell_mitarbeiter (
 
 
 
-
-
+--
+-- Jettz laden wir ein paar Daten in die neu angelegte Datenbank
+--
 SELECT '*** Lade Daten der Mitarbeiter ...' as 'INFO:';
 source mysql/daten_mitarbeiter.sql ;
 SELECT CONCAT('    ', COUNT(*), ' Mitarbeiter') as 'INFO:' FROM mitarbeiter;
