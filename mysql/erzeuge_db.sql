@@ -130,6 +130,23 @@ CREATE TABLE entgeltgruppe (
 ) COMMENT 'Liste der Abteilungen';
 
 --
+-- Tabelle mit der Zuordnung Entgeltgruppe / Mitarbeiter
+--
+-- Der Mitarbeiter hat eine MA-Nummer.
+-- Jedem MA ist eine Entgeltgruppe zugeordnet.
+-- Der MA ist im Zeitraum datum_von bis datum_bis in der Entgeltgruppe
+--
+CREATE TABLE entgeltgruppe_mitarbeiter (
+   mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(nr),
+   entgeltgruppe_nr       INT                  NOT NULL REFERENCES entgeltgruppe(nr),
+   datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
+   datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
+   FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(nr) ON DELETE CASCADE,
+   FOREIGN KEY (entgeltgruppe_nr)              REFERENCES entgeltgruppe(nr) ON DELETE CASCADE,
+   PRIMARY KEY (mitarbeiter_nr, entgeltgruppe_nr, datum_von)
+) COMMENT 'Zuordnung Entgeltgruppe / Mitarbeiter';
+
+--
 -- Tabelle mit (Gleit-)Zeitmodellen
 -- 
 CREATE TABLE zeitmodell (
@@ -140,7 +157,22 @@ CREATE TABLE zeitmodell (
     UNIQUE  KEY (name)
 ) COMMENT 'Liste der Abteilungen';
 
-
+--
+-- Tabelle mit der Zuordnung Zeitmodell / Mitarbeiter
+--
+-- Der Mitarbeiter hat eine MA-Nummer.
+-- Jedem MA ist ein Zeitmodell zugeordnet.
+-- Der MA ist im Zeitraum datum_von bis datum_bis im Zeitmodell
+--
+CREATE TABLE zeitmodell_mitarbeiter (
+   mitarbeiter_nr         INT                  NOT NULL REFERENCES mitarbeiter(nr),
+   zeitmodell_nr          INT                  NOT NULL REFERENCES zeitmodell(nr),
+   datum_von              DATE                 NOT NULL DEFAULT '1000-01-01',
+   datum_bis              DATE                 NOT NULL DEFAULT '9999-12-31',
+   FOREIGN KEY (mitarbeiter_nr)                REFERENCES mitarbeiter(nr) ON DELETE CASCADE,
+   FOREIGN KEY (zeitmodell_nr)                 REFERENCES zeitmodell(nr) ON DELETE CASCADE,
+   PRIMARY KEY (mitarbeiter_nr, zeitmodell_nr, datum_von)
+) COMMENT 'Zuordnung Zeitmodell / Mitarbeiter';
 
 
 
