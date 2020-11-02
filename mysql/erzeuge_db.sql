@@ -218,14 +218,14 @@ VALUES
 (10102, 50000),
 (10103, 50000),
 (10104, 50000);
--- Entgeltgruppen der MA in der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+-- Entgeltgruppen der MA in der Abteilung 'Board'
 INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`)
 VALUES 
 (10101, 24),
 (10102, 24),
 (10103, 24),
 (10104, 24);
--- Zeitmodelle der MA in der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+-- Zeitmodelle der MA in der Abteilung 'Board'
 INSERT INTO `zeitmodell_mitarbeiter` (`mitarbeiter_nr`, `zeitmodell_nr`)
 VALUES 
 (10101, 13),
@@ -254,7 +254,7 @@ VALUES
 (15203, 50001),
 (15204, 50001),
 (15205, 50001);
--- Entgeltgruppen der MA in der Abteilung 'Marketing' hat ein gutes Gehalt (AT 5)
+-- Entgeltgruppen der MA in der Abteilung 'Marketing'
 INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`)
 VALUES 
 (15201, 24),
@@ -262,7 +262,7 @@ VALUES
 (15203, 24),
 (15204, 24);
 
--- Zeitmodelle der MA in der Abteilung 'Board' hat ein gutes Gehalt (AT 5)
+-- Zeitmodelle der MA in der Abteilung 'Marketing'
 INSERT INTO `zeitmodell_mitarbeiter` (`mitarbeiter_nr`, `zeitmodell_nr`)
 VALUES 
 (15201, 13),
