@@ -1,3 +1,5 @@
+# Private und/oder vertrauliche Daten sollten NIEMALS im Git-Repository landen!
+privat/
 .beradaba
 .gitconfig
 
