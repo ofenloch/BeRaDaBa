@@ -45,12 +45,19 @@ CREATE TABLE mitarbeiter (
     vorname               VARCHAR(128)         NOT NULL COMMENT 'Der Vorname des Mitarbeiters',
     datum_geburt          DATE                 NOT NULL DEFAULT '1900-01-01' COMMENT 'Geburtsdatum des Mitarbeiters in der Form JJJJ-MM-TT, zb. 1966-02-09 für den 9. Februar 1966',
     mittelnamen           VARCHAR(128)         NOT NULL DEFAULT '' COMMENT 'Der oder die mittleren Namen des Mitarbeiters',
-    geschlecht            ENUM ('D', 'M','W')  NOT NULL DEFAULT 'D' COMMENT 'Das Geschlecht des Mitarbeiters Divers, Männlich oder Weiblich',
+    geschlecht            ENUM ('D','M','W')   NOT NULL DEFAULT 'D' COMMENT 'Das Geschlecht des Mitarbeiters Divers, Männlich oder Weiblich',
     datum_eintritt        DATE                 NOT NULL DEFAULT '1920-01-01' COMMENT 'Das Datum des Eintritts in die Firma in der Form JJJJ-MM-TT, zb. 1986-09-02 für den 2. September 1986',
     datum_austritt        DATE                 NOT NULL DEFAULT '2222-01-01' COMMENT 'Das Datum des Austritts aus der Firma in der Form JJJJ-MM-TT, zb. 2035-10-12 für den 12. Oktober 2035',
     datum_probezeit_ende  DATE                 NOT NULL DEFAULT '1920-07-01' COMMENT 'Das Datum, an dem die Probezeit endet',
     PRIMARY KEY (nr)
 ) COMMENT 'Liste der Mitarbeiter';
+--
+-- Wir könnten hier noch weitere Felder hinzufügen, (z.B. Stadt, PLZ, Strasse, Hausnummer, Telefonnummer, etc.). Für die BR-Arbeit 
+-- brauchen wir die aber (wahrscheinlich) nicht. Außerdem ist es fraglich, ob wir beispielsweise vom Umzug eines Kollegen erfahren.
+-- Ähnliches gilt für den Familienstand oder die Zahl der Kinder und ihr Alter, Mitgleidsachaft in Vereinen, Parteien, ...
+-- Für die Personalabteilung sind solche Daten sicherlich interessant, weil man sie einerseits für die Gehaltsabrechnung etc. benötigt 
+-- und andererseits daraus Rückschlüsse auf die "Anhänglichkleit" des MAs ziehen kann.
+--
 
 --
 -- Tabelle mit den Abteilungen der Firma
