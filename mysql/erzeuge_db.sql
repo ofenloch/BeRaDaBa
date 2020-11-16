@@ -127,7 +127,7 @@ CREATE TABLE entgeltgruppe (
     name        VARCHAR(40)          NOT NULL DEFAULT '' COMMENT 'beliebige ID, z.B. EG13, sollte einzigartig sein',
     PRIMARY KEY (nr),
     UNIQUE  KEY (name)
-) COMMENT 'Liste der Abteilungen';
+) COMMENT 'Liste der Entgeltgruppen';
 
 --
 -- Tabelle mit der Zuordnung Entgeltgruppe / Mitarbeiter
