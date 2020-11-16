@@ -59,7 +59,7 @@ Wenn wir beim Datum übrigens etwas Unsinniges eingeben, etwa den 31. September,
 
 ## Umgruppierung
 
-Gute Nachrichten: Zum Ende der Probezeit bekommt Max Muster mehr Geld. Er wird von "EG 13" nahc "EG 14" hochgruppiert. Dazu müssen zwei Dinge gemacht werden:
+Gute Nachrichten: Zum Ende der Probezeit bekommt Max Muster mehr Geld. Er wird von "EG 13" nach "EG 14" hochgruppiert. Dazu müssen zwei Dinge gemacht werden:
 
 * Die alte Entegeltgruppe bekommt das entsprechende Enddatum
 * Die neue Entgeltgruppe wird (mit offenem Enddatum) eingetragen
@@ -86,3 +86,20 @@ Wenn wir das richtig gemacht haben, sollte das Ergebnis so aussehen:
 
     mysql>
 
+## Versetzung
+
+Der neue Kollege Max Muster soll zum 01.02.2020 von der IT-Abteilung in die Abteilung 
+"Technical Programming" versetzt werden. Auch in diesem Fall müssen zwei Dinge in die 
+Datenbank eingetragen werden:
+
+* Die alte Abteilung des Kollegen bekommt das entsprechende Enddatum
+* Die neue Abteiulung des Kollegen wird (mit offenem Enddatum) eingetragen
+
+```sql
+UPDATE `abteilung_mitarbeiter` SET `datum_bis`="2020-01-31" WHERE mitarbeiter_nr=500001 AND abteilung_nr=50009;
+```
+
+```sql
+INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`, `datum_von`)
+VALUES(500001, 50016, "2020-02-01");
+```
