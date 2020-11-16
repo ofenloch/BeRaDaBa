@@ -7,7 +7,7 @@ Der neue Kollege Max Rainer Muster, geboren am 19.05.1998, wird am 01.03.2019 ei
 ```sql
 mysql> USE beradaba; 
 INSERT INTO `mitarbeiter` (`datum_geburt`,`vorname`,`nachname`,`mittelnamen`,`geschlecht`,`datum_eintritt`, `datum_probezeit_ende`) 
-VALUES("1998-03-01", "Max", "Muster", "Rainer", 'M', "2019-03-01", "2019-09-01");
+  VALUES("1998-03-01", "Max", "Muster", "Rainer", 'M', "2019-03-01", "2019-09-01");
 ```
 
 Der Datensatz des neuen Kollegen sieht so aus:
@@ -27,21 +27,21 @@ Er arbeitet in der Abteilung "IT":
 
 ```sql
 INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`, `datum_von`)
-VALUES (500001, 50009, "2019-03-01");
+  VALUES (500001, 50009, "2019-03-01");
 ```
 
-Max Rainer Muster hat das Gleitzeitmodell "GLZ 8":
+Max Rainer Muster hat das Zeitmodell "GLZ 8":
 
 ```sql
 INSERT INTO `zeitmodell_mitarbeiter` (`mitarbeiter_nr`, `zeitmodell_nr`, `datum_von`)
-VALUES(500001, 8, "2019-03-01");
+  VALUES(500001, 8, "2019-03-01");
 ```
 
 Bezahlt wird er nach Entgeltgruppe "EG 13":
 
 ```sql
 INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`, `datum_von`)
-VALUES(500001, 13, "2019-03-01");
+  VALUES(500001, 13, "2019-03-01");
 ```
 
 ## Korrekturen
@@ -49,8 +49,10 @@ VALUES(500001, 13, "2019-03-01");
 Die Personalabteilung hat leider einen Fehler gemacht: Die Probezeit von sechs Monaten endet am 30.09.2019 und nicht am 01.09.2019:
 
 ```sql
-UPDATE `mitarbeiter` SET `datum_probezeit_ende`="2019-09-30" WHERE nr=500001;
+UPDATE `mitarbeiter` SET `datum_probezeit_ende`="2019-09-30" 
+  WHERE nr=500001;
 ```
+
 Wenn wir beim Datum übrigens etwas Unsinniges eingeben, etwa den 31. September, verweigert die Datenbank das UPDATE mit einer Fehlermeldung:
 
     mysql> UPDATE `mitarbeiter` SET `datum_probezeit_ende`="2019-09-31" WHERE nr=500001;
@@ -65,12 +67,13 @@ Gute Nachrichten: Zum Ende der Probezeit bekommt Max Muster mehr Geld. Er wird v
 * Die neue Entgeltgruppe wird (mit offenem Enddatum) eingetragen
 
 ```sql
-UPDATE `entgeltgruppe_mitarbeiter` SET `datum_bis`="2019-09-30" WHERE mitarbeiter_nr=500001 AND entgeltgruppe_nr=13;
+UPDATE `entgeltgruppe_mitarbeiter` SET `datum_bis`="2019-09-30" 
+  WHERE mitarbeiter_nr=500001 AND entgeltgruppe_nr=13;
 ```
 
 ```sql
 INSERT INTO `entgeltgruppe_mitarbeiter` (`mitarbeiter_nr`, `entgeltgruppe_nr`, `datum_von`)
-VALUES(500001, 14, "2019-10-01");
+  VALUES(500001, 14, "2019-10-01");
 ```
 
 Wenn wir das richtig gemacht haben, sollte das Ergebnis so aussehen:
@@ -96,10 +99,96 @@ Datenbank eingetragen werden:
 * Die neue Abteiulung des Kollegen wird (mit offenem Enddatum) eingetragen
 
 ```sql
-UPDATE `abteilung_mitarbeiter` SET `datum_bis`="2020-01-31" WHERE mitarbeiter_nr=500001 AND abteilung_nr=50009;
+UPDATE `abteilung_mitarbeiter` SET `datum_bis`="2020-01-31" 
+  WHERE mitarbeiter_nr=500001 AND abteilung_nr=50009;
 ```
 
 ```sql
 INSERT INTO `abteilung_mitarbeiter` (`mitarbeiter_nr`, `abteilung_nr`, `datum_von`)
-VALUES(500001, 50016, "2020-02-01");
+  VALUES(500001, 50016, "2020-02-01");
 ```
+
+## Ausscheiden
+
+Der Kollege Max Muster will uns leider verlassen. Er kündigt zum 31.10.2020.
+
+Jetzt müssen ein paar Dinge geändert werden:
+
+* Das Austrittsdatum muss in seinen Datensatz eingetragen werden
+* Da Austrittsdatum muss in den Zuordnungen Entgeltgruppe, Zeitmodell, Abteilung, ... eingetragen werden.
+
+```sql
+-- Schritt 1: das Austrittsdatum wird in seinen Datensatz eingetragen
+UPDATE `mitarbeiter` SET `datum_austritt`="2020-10-31" 
+  WHERE nr=500001;
+```
+
+```sql
+-- Schritt 2: finde die aktuelle Entgeltgruppe und setze datum_bis auf den Austrittstermin
+UPDATE `entgeltgruppe_mitarbeiter` SET `datum_bis`="2020-10-31" 
+  WHERE mitarbeiter_nr = 500001 AND datum_bis >= CURDATE();
+```
+
+```sql
+-- Schritt 3: finde die aktuelle Abteilung und setze datum_bis auf den Austrittstermin
+UPDATE `abteilung_mitarbeiter` SET `datum_bis`="2020-10-31" 
+  WHERE mitarbeiter_nr = 500001 AND datum_bis >= CURDATE();
+```
+
+```sql
+-- Schritt 4: finde das aktuelle Zeitmodell und setze datum_bis auf den Austrittstermin
+UPDATE `zeitmodell_mitarbeiter` SET `datum_bis`="2020-10-31" 
+  WHERE mitarbeiter_nr = 500001 AND datum_bis >= CURDATE();
+```
+
+Die gemachten Änderungen sollten den vollständigen "Lebenslauf" des Kollegen Max Must in unserer Firma widerspiegeln:
+
+*Max Musters Haupt-Eintrag:*
+
+    mysql> select * from mitarbeiter where nr = 500001;
+    +--------+----+----------+---------+--------------+-------------+------------+----------------+----------------+----------------------+
+    | nr     | id | nachname | vorname | datum_geburt | mittelnamen | geschlecht | datum_eintritt | datum_austritt | datum_probezeit_ende |
+    +--------+----+----------+---------+--------------+-------------+------------+----------------+----------------+----------------------+
+    | 500001 |    | Muster   | Max     | 1998-03-01   | Rainer      | M          | 2019-03-01     | 2222-01-01     | 2019-09-30           |
+    +--------+----+----------+---------+--------------+-------------+------------+----------------+----------------+----------------------+
+    1 row in set (0.00 sec)
+
+    mysql>
+
+*Max Muters Entgeltgruppen:*
+  
+    mysql> select * from entgeltgruppe_mitarbeiter where mitarbeiter_nr = 500001;
+    +----------------+------------------+------------+------------+
+    | mitarbeiter_nr | entgeltgruppe_nr | datum_von  | datum_bis  |
+    +----------------+------------------+------------+------------+
+    |         500001 |               13 | 2019-03-01 | 2019-09-30 |
+    |         500001 |               14 | 2019-10-01 | 2020-10-31 |
+    +----------------+------------------+------------+------------+
+    2 rows in set (0.00 sec)
+
+    mysql> 
+
+*Max Musters Abteilungen:*
+
+    mysql> select * from abteilung_mitarbeiter where mitarbeiter_nr = 500001;
+    +----------------+--------------+------------+------------+
+    | mitarbeiter_nr | abteilung_nr | datum_von  | datum_bis  |
+    +----------------+--------------+------------+------------+
+    |         500001 |        50009 | 2019-03-01 | 2020-01-31 |
+    |         500001 |        50016 | 2020-02-01 | 2020-10-31 |
+    +----------------+--------------+------------+------------+
+    2 rows in set (0.00 sec)
+
+    mysql>
+
+*Max Musters Zeitmodelle:*
+
+    mysql> select * from zeitmodell_mitarbeiter where mitarbeiter_nr = 500001;
+    +----------------+---------------+------------+------------+
+    | mitarbeiter_nr | zeitmodell_nr | datum_von  | datum_bis  |
+    +----------------+---------------+------------+------------+
+    |         500001 |             8 | 2019-03-01 | 2020-10-31 |
+    +----------------+---------------+------------+------------+
+    1 row in set (0.00 sec)
+
+    mysql>
